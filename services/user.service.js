@@ -5,20 +5,38 @@ const bcrypt = require("bcrypt");
 const userService = {
   registerUser: async (data) => {
     try {
-      const userNameRegex = /^[a-zA-Z0-9_.-]{5,20}$/;
       const emailRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$|^".+"$/;
       const passRegex =
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9!@#$%^&*()_+{};':",./<>?|`~])[A-Za-z0-9!@#$%^&*()_+{};':",./<>?|`~]{8,}$/;
-      const { username, name, email, password } = data;
-      if (!username || !name || !email || !password) {
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        gender,
+        dob,
+        password,
+        currentAddress,
+        permanentAddress,
+        city,
+        country,
+      } = data;
+      if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !password ||
+        !phone ||
+        !gender ||
+        !dob ||
+        !currentAddress ||
+        !permanentAddress ||
+        !city ||
+        !country
+      ) {
         return {
           data: { msg: "Please fill required fields!" },
-          status: StatusCodes.BAD_REQUEST,
-        };
-      } else if (!userNameRegex.test(username)) {
-        return {
-          data: { msg: "Invalid username" },
           status: StatusCodes.BAD_REQUEST,
         };
       } else if (!emailRegex.test(email)) {
@@ -40,7 +58,6 @@ const userService = {
         };
       } else {
         const findUserByEmail = await User.findOne({ email: email });
-        const findUserByUsername = await User.findOne({ username: username });
         if (findUserByEmail) {
           return {
             data: {
@@ -48,20 +65,11 @@ const userService = {
               status: StatusCodes.CONFLICT,
             },
           };
-        } else if (findUserByUsername) {
-          return {
-            data: {
-              msg: "Username already exist!",
-              status: StatusCodes.CONFLICT,
-            },
-          };
         } else {
           const hashedPassword = await bcrypt.hash(password, 12);
           const newUser = new User({
-            name,
-            email,
+            ...data,
             password: hashedPassword,
-            username,
           });
           await newUser.save();
           return {

@@ -2,13 +2,11 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    firstName: {
       type: String,
-      unique: true,
       required: true,
-      trim: true,
     },
-    name: {
+    lastName: {
       type: String,
       required: true,
     },
@@ -16,7 +14,35 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    phone: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    dob: {
+      type: String,
+      required: true,
+    },
     password: {
+      type: String,
+      required: true,
+    },
+    currentAddress: {
+      type: String,
+      required: true,
+    },
+    permanentAddress: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    country: {
       type: String,
       required: true,
     },
@@ -32,6 +58,11 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    dp: {
+      type: String,
+      default:
+        "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png",
     },
   },
   { timestamps: true }
