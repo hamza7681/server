@@ -25,6 +25,10 @@ app.use(
   })
 );
 
+app.get("/", (_, res) => {
+  return res.status(200).json({ msg: "TripPix Server" });
+});
+
 app.use("/api", require("./routes/router"));
 
 app.listen(port, () => console.log("Server is running on port", port));
