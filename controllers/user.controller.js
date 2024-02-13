@@ -11,7 +11,7 @@ const userCtrl = {
           .json({ msg: "Invalid Data!" });
       } else {
         const response = await registerUser(data);
-        return res.status(response.data.status).json(response.data);
+        return res.status(response.status).json(response);
       }
     } catch (error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: error });

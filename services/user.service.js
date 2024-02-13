@@ -62,8 +62,8 @@ const userService = {
           return {
             data: {
               msg: "Email already exist!",
-              status: StatusCodes.CONFLICT,
             },
+            status: StatusCodes.CONFLICT,
           };
         } else {
           const hashedPassword = await bcrypt.hash(password, 12);
